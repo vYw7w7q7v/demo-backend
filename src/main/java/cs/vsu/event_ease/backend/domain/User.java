@@ -1,11 +1,9 @@
-package cs.vsu.event_ease.backend.entity;
+package cs.vsu.event_ease.backend.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Value;
 
 
-import java.util.Objects;
 import java.util.UUID;
 
 @NoArgsConstructor

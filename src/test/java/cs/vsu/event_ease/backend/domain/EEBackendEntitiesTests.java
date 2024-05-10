@@ -1,6 +1,5 @@
-package cs.vsu.event_ease.backend.common;
+package cs.vsu.event_ease.backend.domain;
 
-import cs.vsu.event_ease.backend.entity.User;
 import cs.vsu.event_ease.backend.repository.EEUserRepository;
 
 import cs.vsu.event_ease.backend.utils.ColorPrint;
@@ -14,9 +13,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Optional;
 
 @SpringBootTest
-public class EEMainTests {
+public class EEBackendEntitiesTests {
 
-    @Autowired
+    @Autowired()
     private EEUserRepository userRepository;
 
     @Test
@@ -45,8 +44,10 @@ public class EEMainTests {
         // delete
 
         userRepository.deleteById(user.getUuid());
+
         Assertions.assertFalse(userRepository.existsById(user.getUuid()));
         ColorPrint.println("user <" + user.getUuid() + "> is deleted", AnsiColor.GREEN);
 
     }
+
 }
