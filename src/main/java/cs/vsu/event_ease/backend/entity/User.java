@@ -5,9 +5,11 @@ import lombok.*;
 import org.springframework.beans.factory.annotation.Value;
 
 
+import java.util.Objects;
 import java.util.UUID;
 
-@NoArgsConstructor@Getter
+@NoArgsConstructor
+@Getter@ToString@EqualsAndHashCode
 @Entity
 @Table(name = "USER_")
 public class User {
@@ -28,7 +30,7 @@ public class User {
     @Setter
     private String name;
 
-    public User( String email, String login, String password, String name) {
+    public User(String email, String login, String password, String name) {
         this.email = email;
         this.login = login;
         this.password = password;
