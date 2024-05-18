@@ -7,25 +7,30 @@ import lombok.*;
 import java.util.UUID;
 
 @NoArgsConstructor
-@Getter@ToString@EqualsAndHashCode
+@Getter@Setter@ToString@EqualsAndHashCode
 @Entity
 @Table(name = "USER_")
 public class User {
 
     @Id
+    @Column(name = "uuid")
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
 
-    @Setter
+    private void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @Setter
+    @Column(name = "login", unique = true, nullable = false)
     private String login;
 
-    @Setter
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Setter
+    @Column(name = "name", nullable = false)
     private String name;
 
     public User(String email, String login, String password, String name) {
