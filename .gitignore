@@ -34,3 +34,8 @@ build/
 
 ### Other ###
 other
+/other_files/Dockerfile2
+/other_files/Dockerfile3
+/other_files/
+/pg_data/
+/postgres/

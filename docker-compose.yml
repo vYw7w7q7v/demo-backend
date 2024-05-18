@@ -1,0 +1,27 @@
+version: "3.3"
+services:
+  db:
+    image: ee-postgres:latest
+    container_name: "ee-db"
+    restart: always
+    environment:
+      POSTGRES_DB: ee-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+      - ./postgres/config:/etc/postgresql
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    ports:
+      - "5400:5400"
+  backend:
+    image: ee-backend:latest
+    container_name: "ee-backend"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5400/ee-db
+      DB_USER: postgres
+      DB_PASSWORD: 1234
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
