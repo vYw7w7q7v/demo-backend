@@ -1,3 +1,4 @@
 FROM postgres:16.2-alpine
+#COPY ./postgres/config/postgresql.conf /etc/postgresql/postgresql.conf
 #COPY src/main/resources/db/migration/*.sql /docker-entrypoint-initdb.d
-EXPOSE 5400
+EXPOSE 5432
