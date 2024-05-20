@@ -12,8 +12,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
+import static cs.vsu.event_ease.backend.EEBackendTests.SUCCESS_COLOR;
+import static cs.vsu.event_ease.backend.EEBackendTests.SUCCESS_DELETE_COLOR;
+
 @SpringBootTest
-public class EEBackendEntitiesTests {
+public class UserEntityTests {
 
     @Autowired()
     private EEUserRepository userRepository;
@@ -24,29 +27,29 @@ public class EEBackendEntitiesTests {
         // save
         User user = new User("test@mail.ru", "test_login", "test_password", "John");
         userRepository.save(user);
+        ColorPrint.println("saved user: " + user, SUCCESS_COLOR);
 
-        Optional<User> foundUserOptional = userRepository.findById(user.getUuid());
+        Optional<User> foundUserOptional = userRepository.findById(user.getId());
         Assertions.assertFalse(foundUserOptional.isEmpty());
         User foundUser = foundUserOptional.get();
         Assertions.assertEquals(foundUser, user);
-        ColorPrint.println("created user: " + foundUser, AnsiColor.GREEN);
+        ColorPrint.println("found user: " + foundUser, SUCCESS_COLOR);
 
         // update
 
         user.setLogin("new_login");
         userRepository.save(user);
-        foundUserOptional = userRepository.findById(user.getUuid());
+        foundUserOptional = userRepository.findById(user.getId());
         Assertions.assertFalse(foundUserOptional.isEmpty());
         foundUser = foundUserOptional.get();
         Assertions.assertEquals(foundUser, user);
-        ColorPrint.println("updated user: " + foundUser, AnsiColor.GREEN);
+        ColorPrint.println("updated user: " + foundUser, SUCCESS_COLOR);
 
         // delete
 
-        userRepository.deleteById(user.getUuid());
-
-        Assertions.assertFalse(userRepository.existsById(user.getUuid()));
-        ColorPrint.println("user <" + user.getUuid() + "> is deleted", AnsiColor.GREEN);
+        userRepository.delete(user);
+        Assertions.assertFalse(userRepository.existsById(user.getId()));
+        ColorPrint.println("user " + user.getName() + " deleted", SUCCESS_DELETE_COLOR);
 
     }
 
