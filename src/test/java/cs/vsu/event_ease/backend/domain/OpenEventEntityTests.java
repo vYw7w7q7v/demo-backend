@@ -10,7 +10,6 @@ import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
-import java.sql.Time;
 import java.util.Optional;
 
 import static cs.vsu.event_ease.backend.EEBackendTests.SUCCESS_COLOR;
@@ -25,7 +24,7 @@ public class OpenEventEntityTests {
     private EEOpenEventRepository openEventRepository;
 
     @Test
-    public void userEntityCRUDTest() {
+    public void openEventEntityCRUDTest() {
 
         User organizer = new User("test@mail.ru", "organizer_login", "organizer_password", "Gus");
         userRepository.save(organizer);

@@ -22,9 +22,13 @@ public class OpenEvent {
         this.id = id;
     }
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    //@MapsId
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "organizer_id", referencedColumnName = "id")
+    @JoinTable(
+            name = "user_open_event",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "open_event_id")
+    )
     private User organizer;
 
     @Column(name = "name", nullable = false)
@@ -51,15 +55,4 @@ public class OpenEvent {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "OpenEvent{" +
-                "id=" + id +
-                ", organizer=" + organizer.getName() +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", location='" + location + '\'' +
-                ", date=" + date +
-                '}';
-    }
 }

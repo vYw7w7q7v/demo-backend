@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
-import java.util.UUID;
+import java.util.*;
 
 @NoArgsConstructor
 @Data@Entity
@@ -31,6 +31,13 @@ public class User {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    @OneToMany(mappedBy = "organizer", fetch = FetchType.EAGER)
+    private List<OpenEvent> openEvents  = new ArrayList<>();
+
+    private void setOpenEvents(List<OpenEvent> openEvents) {
+        this.openEvents = openEvents;
+    }
 
     public User(String email, String login, String password, String name) {
         this.email = email;
