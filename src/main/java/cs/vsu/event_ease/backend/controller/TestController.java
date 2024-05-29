@@ -1,7 +1,7 @@
 package cs.vsu.event_ease.backend.controller;
 
 import cs.vsu.event_ease.backend.domain.User;
-import cs.vsu.event_ease.backend.repository.EEUserRepository;
+import cs.vsu.event_ease.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @Autowired
-    private EEUserRepository userRepository;
+    private UserRepository userRepository;
 
     //process.env.REACT_APP_API_URL
 

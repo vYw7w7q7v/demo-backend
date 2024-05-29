@@ -44,7 +44,7 @@ public class CloseEvent {
     private User organizer;
 
     @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
-    private List<Invitation> invitations;
+    private List<Invitation> invitations = new LinkedList<>();
 
     public CloseEvent(User organizer, String name, String description, String location, Date date) {
         this.organizer = organizer;

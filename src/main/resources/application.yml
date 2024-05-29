@@ -14,3 +14,6 @@ spring:
     password: 1234
     flyway:
       baseline-on-migrate: true
+token:
+  signing:
+    key: 7777777

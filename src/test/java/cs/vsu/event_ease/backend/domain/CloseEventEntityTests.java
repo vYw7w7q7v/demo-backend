@@ -1,8 +1,8 @@
 package cs.vsu.event_ease.backend.domain;
 
-import cs.vsu.event_ease.backend.repository.EECloseEventRepository;
-import cs.vsu.event_ease.backend.repository.EEInvitationRepository;
-import cs.vsu.event_ease.backend.repository.EEUserRepository;
+import cs.vsu.event_ease.backend.repository.CloseEventRepository;
+import cs.vsu.event_ease.backend.repository.InvitationRepository;
+import cs.vsu.event_ease.backend.repository.UserRepository;
 import cs.vsu.event_ease.backend.utils.ColorPrint;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,12 +20,12 @@ import static cs.vsu.event_ease.backend.EEBackendTests.SUCCESS_DELETE_COLOR;
 public class CloseEventEntityTests {
 
     @Autowired()
-    private EEUserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired()
-    private EECloseEventRepository closeEventRepository;
+    private CloseEventRepository closeEventRepository;
 
     @Autowired
-    private EEInvitationRepository invitationRepository;
+    private InvitationRepository invitationRepository;
 
     @Test
     public void closeEventEntityCRUDTest() {
@@ -59,6 +59,10 @@ public class CloseEventEntityTests {
         ColorPrint.println(closeEvent.getInvitations().toString(), SUCCESS_COLOR);
 
         // delete
+
+        invitationRepository.delete(invitation);
+        Assertions.assertFalse(invitationRepository.existsById(invitation.getId()));
+        ColorPrint.println(String.format("invitation %s deleted!", invitation), SUCCESS_DELETE_COLOR);
 
         closeEventRepository.delete(closeEvent);
         Assertions.assertFalse(closeEventRepository.existsById(closeEvent.getId()));

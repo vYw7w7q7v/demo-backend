@@ -1,9 +1,9 @@
 package cs.vsu.event_ease.backend.repository;
 
-import cs.vsu.event_ease.backend.domain.OpenEvent;
+import cs.vsu.event_ease.backend.domain.CloseEvent;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;
 
-public interface EEOpenEventRepository extends CrudRepository<OpenEvent, UUID> {
+public interface CloseEventRepository extends CrudRepository<CloseEvent, UUID> {
 }

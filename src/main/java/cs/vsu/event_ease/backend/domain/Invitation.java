@@ -45,14 +45,6 @@ public class Invitation {
     }
 
     @Override
-    public String toString() {
-        return "Invitation{" +
-                "id=" + id +
-                ", design='" + design + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

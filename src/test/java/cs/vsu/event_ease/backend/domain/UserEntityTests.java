@@ -1,14 +1,13 @@
 package cs.vsu.event_ease.backend.domain;
 
-import cs.vsu.event_ease.backend.repository.EEOpenEventRepository;
-import cs.vsu.event_ease.backend.repository.EEUserRepository;
+import cs.vsu.event_ease.backend.repository.OpenEventRepository;
+import cs.vsu.event_ease.backend.repository.UserRepository;
 
 import cs.vsu.event_ease.backend.utils.ColorPrint;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Date;
@@ -21,9 +20,9 @@ import static cs.vsu.event_ease.backend.EEBackendTests.SUCCESS_DELETE_COLOR;
 public class UserEntityTests {
 
     @Autowired()
-    private EEUserRepository userRepository;
+    private UserRepository userRepository;
     @Autowired()
-    private EEOpenEventRepository openEventRepository;
+    private OpenEventRepository openEventRepository;
 
     @Test
     public void userEntityCRUDTest() {
