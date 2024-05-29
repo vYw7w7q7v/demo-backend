@@ -72,16 +72,40 @@ public class UserEntityTests {
 
         System.out.println(user.getOpenEvents());
 
-//        Optional<OpenEvent> loadedEventWithUpdatedOrganizerOptional = openEventRepository.findById(openEvent.getId());
-//        Assertions.assertFalse(loadedEventWithUpdatedOrganizerOptional.isEmpty());
-//        Assertions.assertEquals(loadedEventWithUpdatedOrganizerOptional.get().getOrganizer(), user);
-//        ColorPrint.println("with changing user test_event.organizer also changed!", SUCCESS_COLOR);
+        Optional<OpenEvent> loadedEventWithUpdatedOrganizerOptional = openEventRepository.findById(openEvent.getId());
+        Assertions.assertFalse(loadedEventWithUpdatedOrganizerOptional.isEmpty());
+        Assertions.assertEquals(loadedEventWithUpdatedOrganizerOptional.get().getOrganizer(), user);
+        ColorPrint.println("with changing user test_event.organizer also changed!", SUCCESS_COLOR);
 
         openEventRepository.delete(openEvent);
         Assertions.assertFalse(openEventRepository.existsById(openEvent.getId()));
         ColorPrint.println(String.format("event %s deleted!", openEvent.getName()), SUCCESS_DELETE_COLOR);
 
         userRepository.delete(user);
+        Assertions.assertFalse(userRepository.existsById(user.getId()));
+        ColorPrint.println("user " + user.getName() + " deleted", SUCCESS_DELETE_COLOR);
+    }
+
+    @Test
+    public void user3Test() {
+        User user = new User("test@mail.ru", "test_login", "test_password", "John");
+        userRepository.save(user);
+        ColorPrint.println("saved user: " + user, SUCCESS_COLOR);
+
+        OpenEvent openEvent = new OpenEvent(user, "test_event", "<<description>>",
+                "место", new Date(-10800000L));
+        openEventRepository.save(openEvent);
+        ColorPrint.println(String.format("saved openEvent: %s", openEvent), SUCCESS_COLOR);
+
+        user.getOpenEvents().add(openEvent);
+
+        ColorPrint.println(String.format("loaded openEvent: %s", userRepository.findById(user.getId()).get().
+                getOpenEvents().toString()), SUCCESS_COLOR);
+
+        openEventRepository.delete(openEvent);
+        Assertions.assertFalse(openEventRepository.existsById(openEvent.getId()));
+        ColorPrint.println(String.format("event %s deleted!", openEvent.getName()), SUCCESS_DELETE_COLOR);
+        userRepository.deleteById(user.getId());
         Assertions.assertFalse(userRepository.existsById(user.getId()));
         ColorPrint.println("user " + user.getName() + " deleted", SUCCESS_DELETE_COLOR);
     }

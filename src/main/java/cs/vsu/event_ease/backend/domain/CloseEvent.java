@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -15,9 +17,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "open_event")
-public class OpenEvent {
-
+@Table(name = "close_event")
+public class CloseEvent {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -42,21 +43,20 @@ public class OpenEvent {
     @ManyToOne
     private User organizer;
 
-    public OpenEvent(User organizer, String name, String location, Date date) {
+    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
+    private List<Invitation> invitations;
+
+    public CloseEvent(User organizer, String name, String description, String location, Date date) {
         this.organizer = organizer;
         this.name = name;
+        this.description = description;
         this.location = location;
         this.date = date;
     }
 
-    public OpenEvent(User organizer, String name, String description, String location, Date date) {
-        this(organizer, name, location, date);
-        this.description = description;
-    }
-
     @Override
     public String toString() {
-        return "OpenEvent{" +
+        return "CloseEvent{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
@@ -69,11 +69,8 @@ public class OpenEvent {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OpenEvent openEvent = (OpenEvent) o;
-        return Objects.equals(id, openEvent.id) && Objects.equals(name, openEvent.name)
-                && Objects.equals(description, openEvent.description)
-                && Objects.equals(location, openEvent.location) && Objects.equals(date, openEvent.date)
-                && Objects.equals(organizer.getId(), openEvent.organizer.getId());
+        CloseEvent that = (CloseEvent) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description) && Objects.equals(location, that.location) && Objects.equals(date, that.date);
     }
 
     @Override

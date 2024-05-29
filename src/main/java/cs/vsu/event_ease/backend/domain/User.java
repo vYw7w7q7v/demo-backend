@@ -7,8 +7,9 @@ import lombok.*;
 import java.util.*;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-@NoArgsConstructor@AllArgsConstructor
 @Entity
 @Table(name = "user_")
 public class User {
@@ -35,11 +36,13 @@ public class User {
     private String name;
 
     @OneToMany(mappedBy = "organizer", fetch = FetchType.EAGER)
-    private List<OpenEvent> openEvents;
+    private List<OpenEvent> openEvents = new LinkedList<>();
 
-    private void setOpenEvents(List<OpenEvent> openEvents) {
-        this.openEvents = openEvents;
-    }
+    @OneToMany(mappedBy = "organizer", fetch = FetchType.EAGER)
+    private List<CloseEvent> closeEvents = new LinkedList<>();
+
+    @OneToMany(mappedBy = "guest", fetch = FetchType.EAGER)
+    private List<Invitation> invitationList = new LinkedList<>();
 
     public User(String email, String login, String password, String name) {
         this.email = email;
