@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -22,15 +23,6 @@ public class OpenEvent {
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "organizer_id", referencedColumnName = "id")
-    @JoinTable(
-            name = "user_open_event",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "open_event_id")
-    )
-    private User organizer;
-
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -42,6 +34,9 @@ public class OpenEvent {
 
     @Column(name = "date", nullable = false)
     private Date date;
+
+    @ManyToOne
+    private User organizer;
 
     public OpenEvent(User organizer, String name, String location, Date date) {
         this.organizer = organizer;
@@ -55,4 +50,30 @@ public class OpenEvent {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return "OpenEvent{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", location='" + location + '\'' +
+                ", date=" + date +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OpenEvent openEvent = (OpenEvent) o;
+        return Objects.equals(id, openEvent.id) && Objects.equals(name, openEvent.name)
+                && Objects.equals(description, openEvent.description)
+                && Objects.equals(location, openEvent.location) && Objects.equals(date, openEvent.date)
+                && Objects.equals(organizer.getId(), openEvent.organizer.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description, location, date);
+    }
 }

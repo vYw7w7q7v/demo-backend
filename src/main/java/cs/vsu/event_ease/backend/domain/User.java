@@ -6,8 +6,10 @@ import lombok.*;
 
 import java.util.*;
 
-@NoArgsConstructor
-@Data@Entity
+@Data
+@Builder
+@NoArgsConstructor@AllArgsConstructor
+@Entity
 @Table(name = "user_")
 public class User {
 
@@ -33,7 +35,7 @@ public class User {
     private String name;
 
     @OneToMany(mappedBy = "organizer", fetch = FetchType.EAGER)
-    private List<OpenEvent> openEvents  = new ArrayList<>();
+    private List<OpenEvent> openEvents;
 
     private void setOpenEvents(List<OpenEvent> openEvents) {
         this.openEvents = openEvents;
@@ -46,5 +48,28 @@ public class User {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email) &&
+                Objects.equals(login, user.login) && Objects.equals(password, user.password) && Objects.equals(name, user.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, login, password, name);
+    }
 }
