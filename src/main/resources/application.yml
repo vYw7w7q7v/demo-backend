@@ -4,7 +4,7 @@ spring:
   jpa:
     database: POSTGRESQL
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
   datasource:
     platform: postgres
@@ -16,4 +16,4 @@ spring:
       baseline-on-migrate: true
 token:
   signing:
-    key: 7777777
+    key: 7777777w7w7w7w77w7w7w7w7w77w7ww7w7w7w7w77w7w7w7w77w7w7w7w77w7w7w7w7w

@@ -33,21 +33,14 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User getByUsername(String login) {
+    public User getByLogin(String login) {
         return userRepository.findByLogin(login)
                 .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
 
     }
 
-    /**
-     * Получение пользователя по имени пользователя
-     * <p>
-     * Нужен для Spring Security
-     *
-     * @return пользователь
-     */
     public UserDetailsService userDetailsService() {
-        return this::getByUsername;
+        return this::getByLogin;
     }
 
     /**
@@ -58,7 +51,7 @@ public class UserService {
     public User getCurrentUser() {
         // Получение имени пользователя из контекста Spring Security
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return getByUsername(username);
+        return getByLogin(username);
     }
 
 

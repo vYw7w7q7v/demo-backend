@@ -1,6 +1,8 @@
 package cs.vsu.event_ease.backend.controller;
 
 import cs.vsu.event_ease.backend.domain.User;
+import cs.vsu.event_ease.backend.dto.UserDto;
+import cs.vsu.event_ease.backend.dto.mapper.UserMapper;
 import cs.vsu.event_ease.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
@@ -26,11 +28,10 @@ public class TestController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<User> responseEntity() {
-        return new ResponseEntity<>(
-                new User("1", "2", "3", "4"),
-                HttpStatusCode.valueOf(200)
-        );
+    public ResponseEntity<UserDto> responseEntity() {
+        return ResponseEntity.ok(
+                UserMapper.INSTANCE.toDto(new User("1", "2", "3", "4"))
+                );
     }
 
 }
