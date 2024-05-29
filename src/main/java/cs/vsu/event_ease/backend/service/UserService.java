@@ -23,14 +23,14 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User create(User user) {
+    public void create(User user) {
         if (userRepository.existsByLogin(user.getLogin())) {
             throw new RuntimeException("Пользователь с таким именем уже существует");
         }
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new RuntimeException("Пользователь с таким email уже существует");
         }
-        return save(user);
+        userRepository.save(user);
     }
 
     public User getByUsername(String login) {

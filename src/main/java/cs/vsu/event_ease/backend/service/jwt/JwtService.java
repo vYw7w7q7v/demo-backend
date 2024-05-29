@@ -16,14 +16,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-//@Service
+@Service
 public class JwtService {
     @Value("${token.signing.key}")
     private String jwtSigningKey;
 
-    public JwtService(String jwtSigningKey) {
-        this.jwtSigningKey = jwtSigningKey;
-    }
+
 
     /**
      * Извлечение имени пользователя из токена
@@ -45,7 +43,9 @@ public class JwtService {
         Map<String, Object> claims = new HashMap<>();
         if (userDetails instanceof User customUserDetails) {
             claims.put("id", customUserDetails.getId());
+            claims.put("login", customUserDetails.getLogin());
             claims.put("email", customUserDetails.getEmail());
+            claims.put("name", customUserDetails.getName());
             claims.put("role", customUserDetails.getRole());
         }
         return generateToken(claims, userDetails);
