@@ -23,7 +23,9 @@ public class EEBackendEntitiesTests {
 
         // save
         User user = new User("test@mail.ru", "test_login", "test_password", "John");
+        ColorPrint.println("new user: " + user, AnsiColor.GREEN);
         userRepository.save(user);
+        ColorPrint.println("user after save: " + user, AnsiColor.GREEN);
 
         Optional<User> foundUserOptional = userRepository.findById(user.getUuid());
         Assertions.assertFalse(foundUserOptional.isEmpty());
