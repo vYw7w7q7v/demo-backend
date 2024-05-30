@@ -6,4 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.UUID;
 
 public interface InvitationRepository extends CrudRepository<Invitation, UUID> {
+    default void test() {}
 }
