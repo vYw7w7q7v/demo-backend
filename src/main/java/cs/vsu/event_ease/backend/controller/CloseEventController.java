@@ -1,6 +1,7 @@
 package cs.vsu.event_ease.backend.controller;
 
-public class UserController {
+public class CloseEventController {
+
     public void test() {
     }
 }

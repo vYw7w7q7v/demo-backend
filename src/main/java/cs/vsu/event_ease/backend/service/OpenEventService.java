@@ -1,4 +1,6 @@
 package cs.vsu.event_ease.backend.service;
 
 public class OpenEventService {
+    public void test() {
+    }
 }
