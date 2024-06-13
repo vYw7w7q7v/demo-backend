@@ -2,6 +2,7 @@ package cs.vsu.event_ease.backend.service;
 
 import cs.vsu.event_ease.backend.domain.User;
 import cs.vsu.event_ease.backend.repository.UserRepository;
+import cs.vsu.event_ease.backend.web.exception.IncorrectDataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,34 +24,30 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void create(User user) {
+    public void create(User user) throws IncorrectDataException{
         if (userRepository.existsByLogin(user.getLogin())) {
-            throw new RuntimeException("Пользователь с таким именем уже существует");
+            throw new IncorrectDataException("Пользователь с таким именем уже существует");
         }
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("Пользователь с таким email уже существует");
+            throw new IncorrectDataException("Пользователь с таким email уже существует");
         }
         userRepository.save(user);
     }
 
-    public User getByLogin(String login) {
+    public User getByLogin(String login) throws IncorrectDataException {
         return userRepository.findByLogin(login)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+                .orElseThrow(() -> new IncorrectDataException("Пользователь с указанным логином не найден"));
 
     }
 
-    public UserDetailsService userDetailsService() {
+    public UserDetailsService userDetailsService() throws IncorrectDataException {
         return this::getByLogin;
     }
 
-    /**
-     * Получение текущего пользователя
-     *
-     * @return текущий пользователь
-     */
+
     public User getCurrentUser() {
         // Получение имени пользователя из контекста Spring Security
-        var username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return getByLogin(username);
     }
 

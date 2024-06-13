@@ -1,7 +1,7 @@
 
 FROM maven:3.8.4-openjdk-17 as builder
 WORKDIR /app
-COPY . /app/.
+COPY . /app
 COPY /src/main/resources/application-docker.yml /app/application.yml
 #RUN mvn clean install spring-boot:repackage -Dmaven.test.skip=true
 RUN mvn -f /app/pom.xml clean install spring-boot:repackage -Dmaven.test.skip=true

@@ -39,6 +39,9 @@ public class OpenEvent {
     @Column(name = "date", nullable = false)
     private Date date;
 
+    @Column(name = "picture")
+    private String picture;
+
     @ManyToOne
     private User organizer;
 

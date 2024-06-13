@@ -2,10 +2,11 @@ package cs.vsu.event_ease.backend.service;
 
 import cs.vsu.event_ease.backend.domain.Role;
 import cs.vsu.event_ease.backend.domain.User;
-import cs.vsu.event_ease.backend.dto.auth.JwtAuthenticationResponse;
-import cs.vsu.event_ease.backend.dto.auth.SignInRequest;
-import cs.vsu.event_ease.backend.dto.auth.SignUpRequest;
+import cs.vsu.event_ease.backend.web.auth.JwtAuthenticationResponse;
+import cs.vsu.event_ease.backend.web.auth.SignInRequest;
+import cs.vsu.event_ease.backend.web.auth.SignUpRequest;
 import cs.vsu.event_ease.backend.service.jwt.JwtService;
+import cs.vsu.event_ease.backend.web.exception.IncorrectDataException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +23,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public JwtAuthenticationResponse signUp(SignUpRequest request) {
+    public JwtAuthenticationResponse signUp(SignUpRequest request) throws IncorrectDataException {
 
         var user = User.builder()
                 .name(request.getName())
@@ -34,18 +35,19 @@ public class AuthenticationService {
 
         userService.create(user);
 
-        var jwt = jwtService.generateToken(user);
+        String jwt = jwtService.generateToken(user);
+
         return new JwtAuthenticationResponse(jwt);
     }
 
-    public JwtAuthenticationResponse signIn(SignInRequest request) {
+    public JwtAuthenticationResponse signIn(SignInRequest request) throws IncorrectDataException{
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     request.getLogin(),
                     request.getPassword()
             ));
         } catch (AuthenticationException exception) {
-            throw new RuntimeException("Указаны неверные данные");
+            throw new IncorrectDataException("Указаны неверные данные");
         }
 
 
