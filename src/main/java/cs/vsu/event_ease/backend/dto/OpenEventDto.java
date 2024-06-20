@@ -22,7 +22,9 @@ public class OpenEventDto {
 
     private String location;
 
-    private Date date;
+    private String date;
 
-    private String picture;
+    private String image;
+
+    private String type;
 }

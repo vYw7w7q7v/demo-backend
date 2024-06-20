@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -37,22 +36,23 @@ public class OpenEvent {
     private String location;
 
     @Column(name = "date", nullable = false)
-    private Date date;
+    private String date;
 
-    @Column(name = "picture")
-    private String picture;
+    private String image;
+
+    private String type;
 
     @ManyToOne
     private User organizer;
 
-    public OpenEvent(User organizer, String name, String location, Date date) {
+    public OpenEvent(User organizer, String name, String location, String date) {
         this.organizer = organizer;
         this.name = name;
         this.location = location;
         this.date = date;
     }
 
-    public OpenEvent(User organizer, String name, String description, String location, Date date) {
+    public OpenEvent(User organizer, String name, String description, String location, String date) {
         this(organizer, name, location, date);
         this.description = description;
     }

@@ -63,7 +63,7 @@ public class UserEntityTests {
         ColorPrint.println("saved user: " + user, SUCCESS_COLOR);
 
         OpenEvent openEvent = new OpenEvent(user, "test_event", "<<description>>",
-                "место", new Date(-10800000L));
+                "место", new Date(-10800000L).toString());
         openEventRepository.save(openEvent);
         ColorPrint.println(String.format("saved openEvent: %s", openEvent), SUCCESS_COLOR);
         user.setLogin("new_login");
@@ -92,7 +92,7 @@ public class UserEntityTests {
         ColorPrint.println("saved user: " + user, SUCCESS_COLOR);
 
         OpenEvent openEvent = new OpenEvent(user, "test_event", "<<description>>",
-                "место", new Date(-10800000L));
+                "место", new Date(-10800000L).toString());
         openEventRepository.save(openEvent);
         ColorPrint.println(String.format("saved openEvent: %s", openEvent), SUCCESS_COLOR);
 

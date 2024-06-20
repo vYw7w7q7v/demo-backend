@@ -32,15 +32,15 @@ public class OpenEventEntityTests {
 
         // save
         OpenEvent openEvent = new OpenEvent(organizer, "test_event", "<<description>>",
-                "место", new Date(-10800000L));
+                "место", new Date(-10800000L).toString());
         openEventRepository.save(openEvent);
         ColorPrint.println(String.format("saved openEvent: %s", openEvent), SUCCESS_COLOR);
 
         Optional<OpenEvent> foundOpenEventOptional = openEventRepository.findById(openEvent.getId());
         Assertions.assertFalse(foundOpenEventOptional.isEmpty());
         OpenEvent foundOpenEvent = foundOpenEventOptional.get();
-        ColorPrint.println(String.format("openEvent date time: %s", openEvent.getDate().getTime()), AnsiColor.YELLOW);
-        ColorPrint.println(String.format("found openEvent date time: %s", foundOpenEvent.getDate().getTime()), AnsiColor.YELLOW);
+        ColorPrint.println(String.format("openEvent date time: %s", openEvent.getDate()), AnsiColor.YELLOW);
+        ColorPrint.println(String.format("found openEvent date time: %s", foundOpenEvent.getDate()), AnsiColor.YELLOW);
         Assertions.assertEquals(foundOpenEvent, openEvent);
         ColorPrint.println(String.format("found openEvent: %s", foundOpenEvent), SUCCESS_COLOR);
 

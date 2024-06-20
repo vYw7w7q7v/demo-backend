@@ -6,6 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.UUID;
 
 public interface OpenEventRepository extends CrudRepository<OpenEvent, UUID> {
-
-    default void test() {}
+    boolean existsByName(String name);
 }
