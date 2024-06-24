@@ -9,7 +9,7 @@ spring:
   jpa:
     database: POSTGRESQL
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: ${DDL_AUTO:update}
     show-sql: true
   datasource:
     platform: postgres
