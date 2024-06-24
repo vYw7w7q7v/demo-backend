@@ -37,6 +37,7 @@ public class User implements UserDetails {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(columnDefinition = "TEXT")
     private String profileImage;
 
     @OneToMany(mappedBy = "organizer", fetch = FetchType.EAGER)

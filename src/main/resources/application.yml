@@ -10,7 +10,7 @@ spring:
     database: POSTGRESQL
     hibernate:
       ddl-auto: update
-    show-sql: ${SHOW_SQL:true}
+    show-sql: true
   datasource:
     platform: postgres
     driverClassName: org.postgresql.Driver
