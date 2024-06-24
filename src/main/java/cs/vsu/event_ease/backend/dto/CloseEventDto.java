@@ -22,6 +22,10 @@ public class CloseEventDto {
 
     private String location;
 
-    private Date date;
+    private String date;
+
+    private String image;
+
+    private String type;
 
 }

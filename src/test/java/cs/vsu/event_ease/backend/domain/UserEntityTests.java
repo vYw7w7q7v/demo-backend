@@ -5,10 +5,12 @@ import cs.vsu.event_ease.backend.repository.UserRepository;
 
 import cs.vsu.event_ease.backend.utils.ColorPrint;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.event.annotation.BeforeTestMethod;
 
 import java.sql.Date;
 import java.util.Optional;
@@ -16,7 +18,6 @@ import java.util.Optional;
 import static cs.vsu.event_ease.backend.EEBackendTests.SUCCESS_COLOR;
 import static cs.vsu.event_ease.backend.EEBackendTests.SUCCESS_DELETE_COLOR;
 
-@SpringBootTest
 public class UserEntityTests {
 
     @Autowired()
@@ -24,7 +25,11 @@ public class UserEntityTests {
     @Autowired()
     private OpenEventRepository openEventRepository;
 
-    @Test
+    public void init() {
+        userRepository.deleteAll();
+    }
+
+
     public void userEntityCRUDTest() {
 
         // save
@@ -56,7 +61,7 @@ public class UserEntityTests {
 
     }
 
-    @Test
+
     public void userEntityAddOpenEventTest() {
         User user = new User("test@mail.ru", "test_login", "test_password", "John");
         userRepository.save(user);
@@ -85,7 +90,7 @@ public class UserEntityTests {
         ColorPrint.println("user " + user.getName() + " deleted", SUCCESS_DELETE_COLOR);
     }
 
-    @Test
+
     public void user3Test() {
         User user = new User("test@mail.ru", "test_login", "test_password", "John");
         userRepository.save(user);

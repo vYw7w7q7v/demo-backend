@@ -9,9 +9,9 @@ spring:
   datasource:
     platform: postgres
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/ee-db
-    username: postgres
-    password: 1234
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:ee-db}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:1234}
     flyway:
       baseline-on-migrate: true
 token:

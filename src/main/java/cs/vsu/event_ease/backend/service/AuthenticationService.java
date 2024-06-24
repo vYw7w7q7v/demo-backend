@@ -2,7 +2,7 @@ package cs.vsu.event_ease.backend.service;
 
 import cs.vsu.event_ease.backend.domain.Role;
 import cs.vsu.event_ease.backend.domain.User;
-import cs.vsu.event_ease.backend.web.auth.JwtAuthenticationResponse;
+import cs.vsu.event_ease.backend.web.auth.JwtResponse;
 import cs.vsu.event_ease.backend.web.auth.SignInRequest;
 import cs.vsu.event_ease.backend.web.auth.SignUpRequest;
 import cs.vsu.event_ease.backend.service.jwt.JwtService;
@@ -23,7 +23,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
-    public JwtAuthenticationResponse signUp(SignUpRequest request) throws IncorrectDataException {
+    public JwtResponse signUp(SignUpRequest request) throws IncorrectDataException {
 
         var user = User.builder()
                 .name(request.getName())
@@ -37,10 +37,10 @@ public class AuthenticationService {
 
         String jwt = jwtService.generateToken(user);
 
-        return new JwtAuthenticationResponse(jwt);
+        return new JwtResponse(jwt);
     }
 
-    public JwtAuthenticationResponse signIn(SignInRequest request) throws IncorrectDataException{
+    public JwtResponse signIn(SignInRequest request) throws IncorrectDataException{
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     request.getLogin(),
@@ -56,6 +56,6 @@ public class AuthenticationService {
                 .loadUserByUsername(request.getLogin());
 
         String jwt = jwtService.generateToken(user);
-        return new JwtAuthenticationResponse(jwt);
+        return new JwtResponse(jwt);
     }
 }

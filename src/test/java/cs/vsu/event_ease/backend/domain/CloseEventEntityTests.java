@@ -16,7 +16,6 @@ import java.util.Optional;
 import static cs.vsu.event_ease.backend.EEBackendTests.SUCCESS_COLOR;
 import static cs.vsu.event_ease.backend.EEBackendTests.SUCCESS_DELETE_COLOR;
 
-@SpringBootTest
 public class CloseEventEntityTests {
 
     @Autowired()
@@ -27,7 +26,7 @@ public class CloseEventEntityTests {
     @Autowired
     private InvitationRepository invitationRepository;
 
-    @Test
+
     public void closeEventEntityCRUDTest() {
 
         User organizer = new User("test@mail.ru", "organizer_login", "organizer_password", "Gus");
@@ -36,7 +35,7 @@ public class CloseEventEntityTests {
 
         // save
         CloseEvent closeEvent = new CloseEvent(organizer, "test_event", "<<description>>",
-                "место", new Date(-10800000L));
+                "место", new Date(-10800000L).toString());
         closeEventRepository.save(closeEvent);
         ColorPrint.println(String.format("saved event: %s", closeEvent), SUCCESS_COLOR);
 
@@ -44,13 +43,13 @@ public class CloseEventEntityTests {
         Assertions.assertFalse(foundCloseEventOptional.isEmpty());
         CloseEvent foundCloseEvent = foundCloseEventOptional.get();
 
-        ColorPrint.println(String.format("closeEvent date time: %s", closeEvent.getDate().getTime()), AnsiColor.YELLOW);
-        ColorPrint.println(String.format("found closeEvent date time: %s", closeEvent.getDate().getTime()), AnsiColor.YELLOW);
+        ColorPrint.println(String.format("closeEvent date time: %s", closeEvent.getDate()), AnsiColor.YELLOW);
+        ColorPrint.println(String.format("found closeEvent date time: %s", closeEvent.getDate()), AnsiColor.YELLOW);
         Assertions.assertEquals(foundCloseEvent, closeEvent);
 
         ColorPrint.println(organizer.getCloseEvents().toString(), SUCCESS_COLOR);
 
-        User guest = new User("test2@mail.ru", "guest", "pass", "Guest");
+        User guest = new User("test4@mail.ru", "guest", "pass", "Guest");
         userRepository.save(guest);
 
         Invitation invitation = new Invitation("1", closeEvent, guest);

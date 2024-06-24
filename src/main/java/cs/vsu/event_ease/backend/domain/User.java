@@ -37,6 +37,8 @@ public class User implements UserDetails {
     @Column(name = "name", nullable = false)
     private String name;
 
+    private String profileImage;
+
     @OneToMany(mappedBy = "organizer", fetch = FetchType.EAGER)
     private List<OpenEvent> openEvents = new LinkedList<>();
 
@@ -45,6 +47,7 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "guest", fetch = FetchType.EAGER)
     private List<Invitation> invitationList = new LinkedList<>();
+
 
     public User(String email, String login, String password, String name) {
         this.email = email;

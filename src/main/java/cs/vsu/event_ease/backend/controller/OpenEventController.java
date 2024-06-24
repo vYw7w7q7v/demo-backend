@@ -2,7 +2,7 @@ package cs.vsu.event_ease.backend.controller;
 
 import cs.vsu.event_ease.backend.dto.OpenEventDto;
 import cs.vsu.event_ease.backend.service.OpenEventService;
-import cs.vsu.event_ease.backend.web.open_event.CreateOpenEventRequest;
+import cs.vsu.event_ease.backend.web.open_event.CreateEventRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +20,15 @@ public class OpenEventController {
 
     @Operation(summary = "Создание открытого события")
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestBody @Valid CreateOpenEventRequest request) {
+    public ResponseEntity<String> create(@RequestBody @Valid CreateEventRequest request) {
         openEventService.create(request);
         return ResponseEntity.ok().body("Открытое событие успешно создано!");
     }
 
     @Operation(summary = "Получение всех открытых событий")
     @GetMapping("/get")
-    public List<OpenEventDto> get() {
-        return openEventService.findAll();
+    public ResponseEntity<List<OpenEventDto>> get() {
+        return ResponseEntity.ok().body(openEventService.findAll());
     }
 
 }

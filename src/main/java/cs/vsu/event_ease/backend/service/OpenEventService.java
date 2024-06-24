@@ -8,7 +8,7 @@ import cs.vsu.event_ease.backend.repository.OpenEventRepository;
 import cs.vsu.event_ease.backend.repository.UserRepository;
 import cs.vsu.event_ease.backend.web.exception.DataNotFoundException;
 import cs.vsu.event_ease.backend.web.exception.IncorrectDataException;
-import cs.vsu.event_ease.backend.web.open_event.CreateOpenEventRequest;
+import cs.vsu.event_ease.backend.web.open_event.CreateEventRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ public class OpenEventService {
     private OpenEventRepository openEventRepository;
 
 
-    public void create(CreateOpenEventRequest request) throws DataNotFoundException{
+    public void create(CreateEventRequest request) throws DataNotFoundException{
 
         UUID organizerId = request.getOrganizerId();
         User organizer = userRepository.findById(organizerId)

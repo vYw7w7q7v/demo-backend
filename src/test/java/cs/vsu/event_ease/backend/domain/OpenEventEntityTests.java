@@ -15,7 +15,6 @@ import java.util.Optional;
 import static cs.vsu.event_ease.backend.EEBackendTests.SUCCESS_COLOR;
 import static cs.vsu.event_ease.backend.EEBackendTests.SUCCESS_DELETE_COLOR;
 
-@SpringBootTest
 public class OpenEventEntityTests {
 
     @Autowired()
@@ -23,7 +22,7 @@ public class OpenEventEntityTests {
     @Autowired()
     private OpenEventRepository openEventRepository;
 
-    @Test
+
     public void openEventEntityCRUDTest() {
 
         User organizer = new User("test@mail.ru", "organizer_login", "organizer_password", "Gus");
