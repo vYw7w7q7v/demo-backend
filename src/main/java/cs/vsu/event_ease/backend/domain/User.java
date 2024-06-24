@@ -40,10 +40,33 @@ public class User implements UserDetails {
     private String profileImage;
 
     @OneToMany(mappedBy = "organizer", fetch = FetchType.EAGER)
-    private List<OpenEvent> openEvents = new LinkedList<>();
+    private List<OpenEvent> createdOpenEvents = new LinkedList<>();
+
+
+//    @ManyToMany ()
+//    @JoinTable(name = "user_open_event",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "event_id")
+//    )
+    private List<UUID> selectedOpenEvents = new ArrayList<>();
+
+//    public List<UUID> getSelectedOpenEvents() {
+//        return selectedOpenEvents != null ? selectedOpenEvents : new LinkedList<>();
+//    }
+//
+//    public void addSelectedEvent(UUID uuid) {
+//        if (selectedOpenEvents == null) {
+//            selectedOpenEvents = new LinkedList<>();
+//        }
+//        selectedOpenEvents.add(uuid);
+//    }
 
     @OneToMany(mappedBy = "organizer", fetch = FetchType.EAGER)
     private List<CloseEvent> closeEvents = new LinkedList<>();
+
+    public void addCloseEvent(CloseEvent closeEvent) {
+        closeEvents.add(closeEvent);
+    }
 
     @OneToMany(mappedBy = "guest", fetch = FetchType.EAGER)
     private List<Invitation> invitationList = new LinkedList<>();

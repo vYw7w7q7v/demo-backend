@@ -20,14 +20,22 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PutMapping("/update")
-    public ResponseEntity<JwtResponse> updateInfo(@RequestBody @Valid UserDto user) {
-        String newJwt = userService.updateInfo(user);
+    @PutMapping("/update/name")
+    public ResponseEntity<JwtResponse> updateName(@RequestParam @Valid UUID userId,
+                                                  @RequestParam @Valid String name) {
+        String newJwt = userService.updateName(userId, name);
+        return ResponseEntity.ok().body(JwtResponse.builder().token(newJwt).build());
+    }
+
+    @PutMapping("/update/profileImage")
+    public ResponseEntity<JwtResponse> updateProfileImage(@RequestParam @Valid UUID userId,
+                                                          @RequestParam @Valid String profileImage) {
+        String newJwt = userService.updateProfileImage(userId, profileImage);
         return ResponseEntity.ok().body(JwtResponse.builder().token(newJwt).build());
     }
 
     @GetMapping("/get")
-    public ResponseEntity<UserResponse> get(@RequestBody @Valid UUID id) {
+    public ResponseEntity<UserResponse> get(@RequestParam @Valid UUID id) {
         return ResponseEntity.ok().body(userService.getById(id));
     }
 

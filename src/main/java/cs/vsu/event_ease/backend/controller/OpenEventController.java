@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("open-event")
@@ -30,5 +31,24 @@ public class OpenEventController {
     public ResponseEntity<List<OpenEventDto>> get() {
         return ResponseEntity.ok().body(openEventService.findAll());
     }
+
+    @Operation(summary = "Получение всех открытых событий")
+    @GetMapping("/get-created")
+    public ResponseEntity<List<OpenEventDto>> getCreated(@RequestParam UUID userId) {
+        return ResponseEntity.ok().body(openEventService.findByOrganizerId(userId));
+    }
+
+
+//    @PostMapping("/select")
+//    public ResponseEntity<String> select(@RequestParam UUID userId, @RequestParam UUID eventId) {
+//        openEventService.select(userId, eventId);
+//        return ResponseEntity.ok().body("Событие успешно выбрано!");
+//    }
+//
+//    @GetMapping("/get-selected")
+//    public ResponseEntity<List<OpenEventDto>> getSelected(@RequestParam UUID userId) {
+//        List<OpenEventDto> selectedByUser = openEventService.getSelectedEvents(userId);
+//        return ResponseEntity.ok().body(selectedByUser);
+//    }
 
 }

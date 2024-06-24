@@ -5,12 +5,8 @@ import cs.vsu.event_ease.backend.repository.UserRepository;
 
 import cs.vsu.event_ease.backend.utils.ColorPrint;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.event.annotation.BeforeTestMethod;
 
 import java.sql.Date;
 import java.util.Optional;
@@ -74,7 +70,7 @@ public class UserEntityTests {
         user.setLogin("new_login");
         userRepository.save(user);
 
-        System.out.println(user.getOpenEvents());
+        System.out.println(user.getCreatedOpenEvents());
 
         Optional<OpenEvent> loadedEventWithUpdatedOrganizerOptional = openEventRepository.findById(openEvent.getId());
         Assertions.assertFalse(loadedEventWithUpdatedOrganizerOptional.isEmpty());
@@ -101,10 +97,10 @@ public class UserEntityTests {
         openEventRepository.save(openEvent);
         ColorPrint.println(String.format("saved openEvent: %s", openEvent), SUCCESS_COLOR);
 
-        user.getOpenEvents().add(openEvent);
+        user.getCreatedOpenEvents().add(openEvent);
 
         ColorPrint.println(String.format("loaded openEvent: %s", userRepository.findById(user.getId()).get().
-                getOpenEvents().toString()), SUCCESS_COLOR);
+                getCreatedOpenEvents().toString()), SUCCESS_COLOR);
 
         openEventRepository.delete(openEvent);
         Assertions.assertFalse(openEventRepository.existsById(openEvent.getId()));

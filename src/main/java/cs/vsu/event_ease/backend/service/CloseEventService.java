@@ -1,17 +1,17 @@
 package cs.vsu.event_ease.backend.service;
 
-import cs.vsu.event_ease.backend.controller.CloseEventController;
 import cs.vsu.event_ease.backend.domain.CloseEvent;
-import cs.vsu.event_ease.backend.domain.OpenEvent;
+import cs.vsu.event_ease.backend.domain.Invitation;
 import cs.vsu.event_ease.backend.domain.User;
 import cs.vsu.event_ease.backend.dto.CloseEventDto;
+import cs.vsu.event_ease.backend.dto.InvitationDto;
 import cs.vsu.event_ease.backend.dto.mapper.CloseEventMapper;
+import cs.vsu.event_ease.backend.dto.mapper.InvitationMapper;
 import cs.vsu.event_ease.backend.repository.CloseEventRepository;
-import cs.vsu.event_ease.backend.repository.UserRepository;
 import cs.vsu.event_ease.backend.web.exception.DataNotFoundException;
 import cs.vsu.event_ease.backend.web.exception.IncorrectDataException;
 import cs.vsu.event_ease.backend.web.open_event.CreateEventRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
@@ -20,15 +20,21 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CloseEventService {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private CloseEventRepository closeEventRepository;
+
+    private final UserService userService;
+    private final CloseEventRepository closeEventRepository;
+    private final InvitationService invitationService;
+
+    private CloseEvent findById(UUID eventId) {
+        return closeEventRepository.findById(eventId)
+                .orElseThrow(() -> new DataNotFoundException("Не найдено закрытое событие с ID: " + eventId));
+    }
+
     public void create(CreateEventRequest request) {
         UUID organizerId = request.getOrganizerId();
-        User organizer = userRepository.findById(organizerId)
-                .orElseThrow(() -> new DataNotFoundException("Не зарегистрирован пользователь с ID: " + organizerId));
+        User organizer = userService.findById(organizerId);
 
         if (closeEventRepository.existsByName(request.getName()))
             throw new IncorrectDataException("Событие с таким названием уже существует!");
@@ -55,11 +61,47 @@ public class CloseEventService {
     }
 
     public List<CloseEventDto> findByOrganizerId(UUID organizerId) {
-        User organizer = userRepository.findById(organizerId)
-                .orElseThrow(() -> new DataNotFoundException("Не зарегистрирован пользователь с ID: " + organizerId));
+        User organizer = userService.findById(organizerId);
 
         return organizer.getCloseEvents().stream()
                 .map(CloseEventMapper.INSTANCE::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public void invite(UUID eventId, String email, String design) {
+
+        Invitation.InvitationBuilder invitationBuilder = Invitation.builder();
+        CloseEvent closeEvent = findById(eventId);
+
+        if (invitationService.existsByEventIdAndEmail(eventId, email)) {
+            throw new IncorrectDataException(String.format(
+                    "Гость %s уже приглашён на мероприятие <%s>!", email, closeEvent.getName()
+            ));
+        };
+
+        User guest;
+
+        invitationBuilder.event(closeEvent)
+                .status(Invitation.Status.WAIT)
+                .design(design)
+                .email(email);
+
+        try {
+            guest = userService.findByEmail(email);
+            invitationBuilder.guest(guest);
+        } catch (DataNotFoundException ignored) {}
+
+        invitationService.save(invitationBuilder.build());
+    }
+
+
+    public List<InvitationDto> getInvitations(UUID eventId) {
+        CloseEvent event = findById(eventId);
+        List<Invitation> invitationList = event.getInvitations();
+        return invitationList == null || invitationList.isEmpty() ?
+                new LinkedList<>() :
+                event.getInvitations().stream()
+                .map(InvitationMapper.INSTANCE::toDto)
                 .collect(Collectors.toList());
     }
 }

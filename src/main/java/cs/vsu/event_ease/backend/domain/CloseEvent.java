@@ -40,6 +40,7 @@ public class CloseEvent {
     @Column(name = "date", nullable = false)
     private String date;
 
+    @Column(columnDefinition = "TEXT")
     private String image;
 
     private String type;
@@ -48,7 +49,7 @@ public class CloseEvent {
     private User organizer;
 
     @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
-    private List<Invitation> invitations = new LinkedList<>();
+    private List<Invitation> invitations;
 
     public CloseEvent(User organizer, String name, String description, String location, String date) {
         this.organizer = organizer;

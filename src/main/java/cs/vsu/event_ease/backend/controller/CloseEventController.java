@@ -1,6 +1,7 @@
 package cs.vsu.event_ease.backend.controller;
 
 import cs.vsu.event_ease.backend.dto.CloseEventDto;
+import cs.vsu.event_ease.backend.dto.InvitationDto;
 import cs.vsu.event_ease.backend.service.CloseEventService;
 import cs.vsu.event_ease.backend.web.open_event.CreateEventRequest;
 import jakarta.validation.Valid;
@@ -27,5 +28,19 @@ public class CloseEventController {
     @GetMapping("/get-by-organizer-id")
     public ResponseEntity<List<CloseEventDto>> get(@RequestParam @Valid UUID organizerId) {
         return ResponseEntity.ok().body(closeEventService.findByOrganizerId(organizerId));
+    }
+
+    @PostMapping("/invite")
+    public ResponseEntity<String> invite(@RequestParam @Valid UUID eventId,
+                                         @RequestParam @Valid String email,
+                                         @RequestParam @Valid String design) {
+        closeEventService.invite(eventId, email, design);
+        return ResponseEntity.ok().body("Пользователь приглашён!");
+    }
+
+    @GetMapping("/get-invitations")
+    public ResponseEntity<List<InvitationDto>> getInvitations(@RequestParam @Valid UUID eventId) {
+        List<InvitationDto> invitations = closeEventService.getInvitations(eventId);
+        return ResponseEntity.ok().body(invitations);
     }
 }

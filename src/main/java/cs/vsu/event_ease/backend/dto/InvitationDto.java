@@ -14,9 +14,8 @@ import java.util.UUID;
 public class InvitationDto {
 
     private UUID id;
-
     private String design;
-
     private String status = "wait";
+    private String email;
 
 }

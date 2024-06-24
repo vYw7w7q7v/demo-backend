@@ -1,15 +1,12 @@
 package cs.vsu.event_ease.backend.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Objects;
 import java.util.UUID;
 
-@Data
+@Setter@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,7 +20,8 @@ public class Invitation {
 
     private String design;
 
-    private String status = "wait";
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.WAIT;
 
     @ManyToOne
     private CloseEvent event;
@@ -31,18 +29,7 @@ public class Invitation {
     @ManyToOne
     private User guest;
 
-    public Invitation(String design, CloseEvent event, User guest) {
-        this.design = design;
-        this.event = event;
-        this.guest = guest;
-    }
-
-    public Invitation(String design, String status, CloseEvent event, User guest) {
-        this.design = design;
-        this.status = status;
-        this.event = event;
-        this.guest = guest;
-    }
+    private String email;
 
     @Override
     public boolean equals(Object o) {
@@ -56,4 +43,11 @@ public class Invitation {
     public int hashCode() {
         return Objects.hash(id, design);
     }
+
+    public enum Status {
+        WAIT,
+        ACCEPT,
+        DECLINED
+    }
+
 }

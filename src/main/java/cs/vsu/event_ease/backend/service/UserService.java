@@ -56,6 +56,15 @@ public class UserService {
         return this::getByLogin;
     }
 
+    public User findById(UUID uuid) {
+        return userRepository.findById(uuid)
+                .orElseThrow(() -> new DataNotFoundException("Не зарегистрирован пользователь с ID: " + uuid));
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new DataNotFoundException("Не найден пользователь с данным email: " + email));
+    }
 
     public User getCurrentUser() {
         // Получение имени пользователя из контекста Spring Security
@@ -63,9 +72,22 @@ public class UserService {
         return getByLogin(userLogin);
     }
 
+    public String updateName(UUID userId, String name) {
+        User user = findById(userId);
+        user.setName(name);
+        userRepository.save(user);
+        return jwtService.generateToken(user);
+    }
+
+    public String updateProfileImage(UUID userId, String profileImage) {
+        User user = findById(userId);
+        user.setProfileImage(profileImage);
+        userRepository.save(user);
+        return jwtService.generateToken(user);
+    }
+
     public String updateInfo(UserDto newProfileInfo) {
-        User user = userRepository.findById(newProfileInfo.getId())
-                .orElseThrow(() -> new DataNotFoundException("Пользователь с данным ID не найден!"));
+        User user = findById(newProfileInfo.getId());
 
         user.setName(newProfileInfo.getName());
         user.setProfileImage(newProfileInfo.getProfileImage());
@@ -97,8 +119,7 @@ public class UserService {
 
 
     public UserResponse getById(UUID id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("Пользователь с данным ID не найден!"));
+        User user = findById(id);
         String jwt = jwtService.generateToken(user);
         return new UserResponse(UserMapper.INSTANCE.toDto(user), jwt);
     }
@@ -110,4 +131,7 @@ public class UserService {
         }
         return res;
     }
+
+
+
 }

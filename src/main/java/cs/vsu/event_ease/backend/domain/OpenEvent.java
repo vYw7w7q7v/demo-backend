@@ -38,6 +38,7 @@ public class OpenEvent {
     @Column(name = "date", nullable = false)
     private String date;
 
+    @Column(columnDefinition = "TEXT")
     private String image;
 
     private String type;
