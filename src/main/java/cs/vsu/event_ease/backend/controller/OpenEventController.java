@@ -32,7 +32,7 @@ public class OpenEventController {
         return ResponseEntity.ok().body(openEventService.findAll());
     }
 
-    @Operation(summary = "Получение всех открытых событий")
+    @Operation(summary = "Получение всех созданных открытых событий")
     @GetMapping("/get-created")
     public ResponseEntity<List<OpenEventDto>> getCreated(@RequestParam UUID userId) {
         return ResponseEntity.ok().body(openEventService.findByOrganizerId(userId));

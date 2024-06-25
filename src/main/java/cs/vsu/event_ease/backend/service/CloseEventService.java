@@ -5,11 +5,13 @@ import cs.vsu.event_ease.backend.domain.Invitation;
 import cs.vsu.event_ease.backend.domain.User;
 import cs.vsu.event_ease.backend.dto.CloseEventDto;
 import cs.vsu.event_ease.backend.dto.InvitationDto;
+import cs.vsu.event_ease.backend.dto.UserDto;
 import cs.vsu.event_ease.backend.dto.mapper.CloseEventMapper;
 import cs.vsu.event_ease.backend.dto.mapper.InvitationMapper;
 import cs.vsu.event_ease.backend.repository.CloseEventRepository;
 import cs.vsu.event_ease.backend.web.exception.DataNotFoundException;
 import cs.vsu.event_ease.backend.web.exception.IncorrectDataException;
+import cs.vsu.event_ease.backend.web.invitation.VerifyResponse;
 import cs.vsu.event_ease.backend.web.open_event.CreateEventRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -73,25 +75,26 @@ public class CloseEventService {
         Invitation.InvitationBuilder invitationBuilder = Invitation.builder();
         CloseEvent closeEvent = findById(eventId);
 
-        if (invitationService.existsByEventIdAndEmail(eventId, email)) {
-            throw new IncorrectDataException(String.format(
-                    "Гость %s уже приглашён на мероприятие <%s>!", email, closeEvent.getName()
-            ));
-        };
-
-        User guest;
-
         invitationBuilder.event(closeEvent)
                 .status(Invitation.Status.WAIT)
                 .design(design)
                 .email(email);
+
+        if (invitationService.existsByEventIdAndEmail(eventId, email)) {
+            throw new IncorrectDataException(String.format(
+                    "Гость %s уже приглашён на мероприятие <%s>!", email, closeEvent.getName()
+            ));
+        }
+        User guest;
 
         try {
             guest = userService.findByEmail(email);
             invitationBuilder.guest(guest);
         } catch (DataNotFoundException ignored) {}
 
-        invitationService.save(invitationBuilder.build());
+        Invitation invitation = invitationBuilder.build();
+        invitationService.save(invitation);
+        invitationService.sendInvitation(invitation, closeEvent);
     }
 
 
@@ -103,5 +106,15 @@ public class CloseEventService {
                 event.getInvitations().stream()
                 .map(InvitationMapper.INSTANCE::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public VerifyResponse verify(UUID code) {
+        Invitation invitation;
+        try {
+            invitation = invitationService.findById(code);
+        } catch (DataNotFoundException exception) {
+            return new VerifyResponse(false, null);
+        }
+        return new VerifyResponse(true, invitation.getEmail());
     }
 }

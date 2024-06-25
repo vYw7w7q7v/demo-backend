@@ -4,6 +4,17 @@
 #  file:
 #    name: logs/app.log
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: egorgolovin.7776@gmail.com
+    password: cjjasdmmikieiemp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   application:
     name: EventEase-backend
   jpa:
@@ -22,3 +33,9 @@ spring:
 token:
   signing:
     key: 7777777w7w7w7w77w7w7w7w7w77w7ww7w7w7w7w77w7w7w7w77w7w7w7w77w7w7w7w7w
+#  spring.mail.host=smtp.gmail.com
+#  spring.mail.port=587
+#  spring.mail.username= gmail user name
+#  spring.mail.password= your password
+#  spring.mail.properties.mail.smtp.auth=true
+#  spring.mail.properties.mail.smtp.starttls.enable=true
